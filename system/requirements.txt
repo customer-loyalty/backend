@@ -1,0 +1,11 @@
+
+Django==4.2
+
+django-phonenumber-field==7.1.0
+django-timezone-field==5.1
+djangorestframework==3.14.0
+django-import_export
+phonenumbers==8.13.16
+djangorestframework==3.14.0
+django-object-actions==4.1.0
+djoser
