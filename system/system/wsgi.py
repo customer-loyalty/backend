@@ -1,16 +1,15 @@
 """
-WSGI config for system project.
+ASGI config for system project.
 
-It exposes the WSGI callable as a module-level variable named ``application``.
+It exposes the ASGI callable as a module-level variable named ``application``.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
+https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 """
-
 import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'system.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bot_project.settings')
 
 application = get_wsgi_application()
