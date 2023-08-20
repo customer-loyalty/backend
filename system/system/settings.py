@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'djoser',
     'accountapp.apps.AccountappConfig',
     'drf_yasg',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

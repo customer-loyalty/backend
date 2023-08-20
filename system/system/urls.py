@@ -31,15 +31,14 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=[permissions.IsAdminUser], # You can add your own permissions
+    permission_classes=[permissions.IsAdminUser],
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
-    # JWT-эндпоинты, для управления JWT-токенами:
     path('account/', include('accountapp.urls')),
     path('auth/', include('djoser.urls.jwt')),
-     re_path(
+    re_path(
         r"^swagger(?P<format>\\.json|\\.yaml)$",
         schema_view.without_ui(cache_timeout=0),
         name="schema-json",
@@ -54,4 +53,4 @@ urlpatterns = [
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc",
     ),
-] 
+]

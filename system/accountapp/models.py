@@ -2,6 +2,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
+
+CHOICES = (('male', 'Мужской пол'), ('female', 'Женский пол'))
+
+
 class Сard(models.Model):
     name = models.CharField(
         verbose_name='Имя',
@@ -36,23 +40,18 @@ class Account(AbstractUser):
         verbose_name='Телефонный номер',
         help_text='Введите Ваш телефонный номер'),
     email = models.EmailField('электронный адрес', max_length=254, unique=True)
-    website= models.URLField(max_length=250)
+    website = models.URLField(max_length=250)
     address = models.CharField(
         verbose_name='Адрес организации',
         max_length=150
     )
-    client = models.ForeignKey(
-        'Client',
-        null = True,
-        on_delete=models.CASCADE,
-        verbose_name='Клиент',
-    )
     owner = models.ForeignKey(
         'Owner',
-        null = True,
+        null=True,
         on_delete=models.CASCADE,
         verbose_name='Владелец',
     )
+
     class Meta:
         verbose_name = 'Аккаунт'
         verbose_name_plural = 'Аккаунты'
@@ -60,8 +59,6 @@ class Account(AbstractUser):
 
     def __str__(self):
         return self.username
-    
-CHOICES = (('male', 'Мужской пол'),('female', 'Женский пол'))
 
 
 class Client(models.Model):
@@ -75,12 +72,14 @@ class Client(models.Model):
         help_text='Введите свою фамилию',
         max_length=150
     )
-    patronymic = models.CharField(
+    patronymic1 = models.CharField(
         verbose_name='Отчество',
         help_text='Введите свое отчество',
-        max_length=150),
+        max_length=150)
     dob = models.DateField(max_length=8)
-    sex = models.CharField(choices=CHOICES, default="Мужской пол", max_length=40)
+    sex = models.CharField(choices=CHOICES,
+                           default="Мужской пол",
+                           max_length=40)
     created_at = models.DateTimeField(auto_now_add=True)
     telegram = models.CharField(
         verbose_name='имя аккаунта телеграмм',
@@ -91,6 +90,12 @@ class Client(models.Model):
         null=True,
         verbose_name='Телефонный номер',
         help_text='Введите Ваш телефонный номер'
+    )
+    client = models.ForeignKey(
+        'Account',
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name='Компания',
     )
     card = models.ForeignKey(
         Сard,
@@ -105,7 +110,8 @@ class Client(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
-    
+
+
 class Owner(models.Model):
     first_name = models.CharField(
         verbose_name='Имя',

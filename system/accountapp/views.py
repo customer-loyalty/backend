@@ -1,12 +1,16 @@
+from rest_framework import permissions
+from rest_framework import viewsets
+from rest_framework import permissions
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Client
-# Create your views here.
 from .serializers import ClientSerializer
-from rest_framework import viewsets
+
 
 class ClientViewSet(viewsets.ModelViewSet):
-    """Вьюсет для работе с моделью Recipe."""
+    """Вьюсет для работе с моделью Client."""
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-   
-    
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ('client',)
+    permission_classes = (permissions.IsAuthenticated,)
