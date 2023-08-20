@@ -11,3 +11,4 @@ django-object-actions==4.1.0
 djoser
 django-phonenumber-field==7.1.0
 phonenumbers==8.13.16
+django-filter==22.1
