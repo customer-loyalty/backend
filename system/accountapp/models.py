@@ -16,6 +16,8 @@ class Сard(models.Model):
         verbose_name='бонусы',
         max_length=150
     )
+    cardId =  models.IntegerField(max_length=16, 
+                                              help_text="Enter field documentation")
     balance = models.CharField(
         verbose_name='баланс',
         max_length=150
@@ -110,7 +112,7 @@ class Client(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
-
+    
 
 class Owner(models.Model):
     first_name = models.CharField(
