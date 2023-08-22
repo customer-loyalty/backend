@@ -40,10 +40,10 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
     'accountapp.apps.AccountappConfig',
     'drf_yasg',
     'django_filters',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +143,16 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accountapp.Account'
+
+DJOSER = {
+    "USER_ID_FIELD": "username",
+    "LOGIN_FIELD": "email",
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SITE_NAME = "SaaSitive"

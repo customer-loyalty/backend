@@ -7,19 +7,15 @@ CHOICES = (('male', 'Мужской пол'), ('female', 'Женский пол'
 
 
 class Сard(models.Model):
-    name = models.CharField(
+    cardType = models.CharField(
         verbose_name='Имя',
-        help_text='Имя карты',
-        max_length=150
-    )
-    bonus_rules = models.CharField(
-        verbose_name='бонусы',
+        help_text='Тип карты',
         max_length=150
     )
     cardId =  models.IntegerField(max_length=16, 
-                                              help_text="Enter field documentation")
-    balance = models.CharField(
-        verbose_name='баланс',
+                                  verbose_name='Код карты')
+    bonusBalance = models.CharField(
+        verbose_name='Баланс карты',
         max_length=150
     )
 
@@ -64,30 +60,30 @@ class Account(AbstractUser):
 
 
 class Client(models.Model):
-    first_name = models.CharField(
+    name = models.CharField(
         verbose_name='Имя',
         help_text='Введите свое имя',
         max_length=150
     )
-    last_name = models.CharField(
+    surname= models.CharField(
         verbose_name='Фамилия',
         help_text='Введите свою фамилию',
         max_length=150
     )
-    patronymic1 = models.CharField(
+    middleName = models.CharField(
         verbose_name='Отчество',
         help_text='Введите свое отчество',
         max_length=150)
-    dob = models.DateField(max_length=8)
-    sex = models.CharField(choices=CHOICES,
+    birthday = models.DateField(max_length=8)
+    gender = models.CharField(choices=CHOICES,
                            default="Мужской пол",
                            max_length=40)
-    created_at = models.DateTimeField(auto_now_add=True)
+    reg = models.DateTimeField(auto_now_add=True)
     telegram = models.CharField(
         verbose_name='имя аккаунта телеграмм',
         max_length=150
     )
-    phone_number = PhoneNumberField(
+    phone = PhoneNumberField(
         blank=True,
         null=True,
         verbose_name='Телефонный номер',
@@ -111,7 +107,7 @@ class Client(models.Model):
         verbose_name_plural = 'Клиенты'
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.name} {self.surname}'
     
 
 class Owner(models.Model):

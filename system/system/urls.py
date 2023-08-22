@@ -36,8 +36,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
-    path('account/', include('accountapp.urls')),
+    # JWT-эндпоинты, для управления JWT-токенами:
     path('auth/', include('djoser.urls.jwt')),
+    path('account/', include('accountapp.urls')),
     re_path(
         r"^swagger(?P<format>\\.json|\\.yaml)$",
         schema_view.without_ui(cache_timeout=0),
