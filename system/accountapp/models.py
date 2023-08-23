@@ -12,8 +12,8 @@ class Сard(models.Model):
         help_text='Тип карты',
         max_length=150
     )
-    cardId =  models.IntegerField(max_length=16, 
-                                  verbose_name='Код карты')
+    cardId =  models.IntegerField(verbose_name='Код карты')
+                                 
     bonusBalance = models.CharField(
         verbose_name='Баланс карты',
         max_length=150

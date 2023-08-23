@@ -24,7 +24,6 @@ class ClientSerializer(serializers.ModelSerializer):
         request = self.context.get('request', None)
         card = validated_data.pop('card')
         print(card, 1)
-        #account = validated_data.pop('client')
         card = Сard.objects.create (**card)
         print(card, 2)
         card_id= Сard.objects.latest('id')
