@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-
+from django.core.validators import RegexValidator
 
 CHOICES = (('male', 'Мужской пол'), ('female', 'Женский пол'))
 
@@ -32,24 +32,9 @@ class Account(AbstractUser):
         unique=True,
         verbose_name='Уникальное имя',
         validators=[AbstractUser.username_validator, ],)
-    phone_number = PhoneNumberField(
-        blank=True,
-        null=True,
-        verbose_name='Телефонный номер',
-        help_text='Введите Ваш телефонный номер'),
+    phone_number = PhoneNumberField()
     email = models.EmailField('электронный адрес', max_length=254, unique=True)
-    website = models.URLField(max_length=250)
-    address = models.CharField(
-        verbose_name='Адрес организации',
-        max_length=150
-    )
-    owner = models.ForeignKey(
-        'Owner',
-        null=True,
-        on_delete=models.CASCADE,
-        verbose_name='Владелец',
-    )
-
+    
     class Meta:
         verbose_name = 'Аккаунт'
         verbose_name_plural = 'Аккаунты'
@@ -83,12 +68,7 @@ class Client(models.Model):
         verbose_name='имя аккаунта телеграмм',
         max_length=150
     )
-    phone = PhoneNumberField(
-        blank=True,
-        null=True,
-        verbose_name='Телефонный номер',
-        help_text='Введите Ваш телефонный номер'
-    )
+    phone_number = PhoneNumberField()
     client = models.ForeignKey(
         'Account',
         null=True,
@@ -110,14 +90,3 @@ class Client(models.Model):
         return f'{self.name} {self.surname}'
     
 
-class Owner(models.Model):
-    first_name = models.CharField(
-        verbose_name='Имя',
-        help_text='Введите свое имя',
-        max_length=150
-    )
-    last_name = models.CharField(
-        verbose_name='Фамилия',
-        help_text='Введите свою фамилию',
-        max_length=150
-    )

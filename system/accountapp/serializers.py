@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from .models import Client, Сard
+from phonenumber_field.serializerfields import PhoneNumberField
+from djoser.serializers import UserCreateSerializer
+from .models import Client, Сard, Account
 
 class СardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,13 +12,12 @@ class СardSerializer(serializers.ModelSerializer):
 
 class ClientSerializer(serializers.ModelSerializer):
     """Класс - сериализатор модели """
-    client = serializers.StringRelatedField()
     reg = serializers.DateTimeField(format="%Y-%m-%d")
     card = СardSerializer()
     class Meta:
         model = Client
         fields = ('id','name', 'surname', 'middleName', 'birthday', 'gender',
-                  'reg', 'telegram', 'phone', 'client', 'card')
+                  'reg', 'telegram', 'phone_number', 'client', 'card')
     
 
     def create(self, validated_data):
@@ -27,9 +28,30 @@ class ClientSerializer(serializers.ModelSerializer):
         card = Сard.objects.create (**card)
         print(card, 2)
         card_id= Сard.objects.latest('id')
-        #print(card_id, 3)
+        print(card_id, 3)
         client = Client.objects.create(**validated_data, card =card_id)
         print(4)
         return client 
+
+'''class OwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('first_name','last_name')
+        model = Owner'''
+
+
+class AccountSerializer(UserCreateSerializer):
+    """Кастомизация пользователя из Djoser."""
+    
+   
+
+    class Meta:
+        model = Account
+        fields = ('username', 'email',  
+                  'phone_number',  'password',
+                  'first_name', 'last_name')  
+        
+   
+
+
 
 

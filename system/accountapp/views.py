@@ -1,11 +1,10 @@
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
-
-from .models import Client
-from .serializers import ClientSerializer
+from djoser.views import UserViewSet
+from .models import Client, Account
+from .serializers import ClientSerializer, AccountSerializer
 
 
 class ClientViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
@@ -17,3 +16,16 @@ class ClientViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('client',)
     permission_classes = (permissions.IsAuthenticated,)
+
+class AccountViewSet(UserViewSet):
+    """
+    Создание/получение пользователей
+    и
+    создание/получение/удаления подписок.
+    """
+
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+   
+    http_method_names = ['get', 'post', 'delete', 'head']
