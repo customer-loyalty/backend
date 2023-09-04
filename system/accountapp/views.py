@@ -7,9 +7,7 @@ from .models import Client, Account
 from .serializers import ClientSerializer, AccountSerializer
 
 
-class ClientViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
-                    mixins.UpdateModelMixin,mixins. DestroyModelMixin, 
-                            viewsets.GenericViewSet):
+class ClientViewSet(viewsets.ModelViewSet):
     """Вьюсет для работе с моделью Client."""
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
