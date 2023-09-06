@@ -67,7 +67,6 @@ DATABASES = {
             'HOST': os.getenv('DB_HOST', default='localhost'),
             'PORT': os.getenv('DB_PORT', default='5434')
         },
-    
         'dev': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR,

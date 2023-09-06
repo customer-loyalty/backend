@@ -1,10 +1,9 @@
 from rest_framework import serializers
-from django.http import HttpResponse
-from phonenumber_field.serializerfields import PhoneNumberField
 from djoser.serializers import UserCreateSerializer
-from rest_framework import status
+
 from .models import Client, Сard, Account
-from rest_framework.response import Response
+
+
 class СardSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('cardType','cardId', 'bonusBalance')
@@ -20,9 +19,7 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ('id','name', 'surname', 'middleName', 'birthday', 'gender',
                   'reg', 'telegram', 'phone_number', 'client', 'card')
     
-
     def create(self, validated_data):
-        
         request = self.context.get('request', None)
         card = validated_data.pop('card')
         print(card, 1)
@@ -41,11 +38,10 @@ class ClientSerializer(serializers.ModelSerializer):
         card_serializer.save()
         return super().update(instance, validated_data)
 
+
 class AccountSerializer(UserCreateSerializer):
     """Кастомизация пользователя из Djoser."""
     
-   
-
     class Meta:
         model = Account
         fields = ('username', 'email',  

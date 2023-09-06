@@ -17,13 +17,10 @@ class ClientViewSet(viewsets.ModelViewSet):
 
 class AccountViewSet(UserViewSet):
     """
-    Создание/получение пользователей
-    и
+    Создание/получение пользователей и
     создание/получение/удаления подписок.
     """
-
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     permission_classes = (permissions.IsAuthenticated,)
-   
     http_method_names = ['get', 'post', 'delete', 'head']
