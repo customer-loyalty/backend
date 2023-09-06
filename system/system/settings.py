@@ -1,13 +1,16 @@
+import os
 from datetime import timedelta
 from pathlib import Path
-import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-SECRET_KEY = 'django-insecure-%i6juh-*)*vf+8a46(vz#44ni!s#u)sps%ckg355*9+=vv-e9%'
-
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -59,23 +62,28 @@ WSGI_APPLICATION = 'system.wsgi.application'
 
 
 DATABASES = {
-        'production': {
-            'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-            'NAME': os.getenv('DB_NAME', default='postgres'),
-            'USER': os.getenv('POSTGRES_USER', default='postgres'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-            'HOST': os.getenv('DB_HOST', default='localhost'),
-            'PORT': os.getenv('DB_PORT', default='5434')
-        },
-    
-        'dev': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR,
-            'db.sqlite3'),
-        },
+    'postgres': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', default='postgres'),
+        'USER': os.getenv('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.getenv('DB_HOST', default='localhost'),
+        'PORT': os.getenv('DB_PORT', default='5434')
+    },
+
+    'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
 }
 
-DATABASES['default'] = DATABASES['dev' if DEBUG else 'production']
+DB_TYPE = os.getenv('DB_TYPE', default='sqlite')
+
+if DB_TYPE == 'sqlite':
+    DATABASES['default'] = DATABASES['sqlite']
+else:
+    DATABASES['default'] = DATABASES['postgres']
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -132,7 +140,6 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
     'SERIALIZERS': {
          'user_create': 'accountapp.serializers.AccountSerializer'
     }
