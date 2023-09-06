@@ -70,7 +70,7 @@ class Client(models.Model):
     )
     phone_number = PhoneNumberField()
     client = models.ForeignKey(
-        'Account',
+        Account,
         null=True,
         on_delete=models.CASCADE,
         verbose_name='Компания',

@@ -8,9 +8,9 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-%i6juh-*)*vf+8a46(vz#44ni!s#u)sps%ckg355*9+=vv-e9%'#os.getenv('SECRET_KEY')
 
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG', default=True)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'accountapp.apps.AccountappConfig',
+    'statisic.apps.StatisicConfig',
     'drf_yasg',
     'django_filters',
     'djoser',
