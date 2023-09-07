@@ -5,7 +5,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from functools import wraps
 from django.utils.formats import date_format
-
+from accountapp.models import Client
 _DEFAULT_POOL = pool.ThreadPoolExecutor()
 
 def threadpool(f, executor=None):
@@ -16,22 +16,23 @@ def threadpool(f, executor=None):
     return wrap
 
 @threadpool
-def static_count_message():
+def static_count_message(account):
     from accountapp.models import Client
 
-    a = Client.objects.values_list(
+    a = Client.objects.filter(client__username=account).values_list(
         'name', 'surname', 'telegram', 'card__cardType',
         'card__cardId', 'card__bonusBalance', 'client__username', 'reg')
     d = []
     for i in a:
         date_string = date_format(i[-1])
         print(date_string, 124)
-        i = list(i[0:7])+[date_string]
+        i = list(i[0:-1])+[date_string]
+        print(list(i[0:-1]))
         d.append(tuple(i))
   
     return d
 
-def export_xls(request):
+def export_xls(request, account):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="users.xls"'
     wb = xlwt.Workbook(encoding='utf-8')
@@ -47,7 +48,7 @@ def export_xls(request):
             row_num += 1
             for col_num in range(len(row)):
                 ws.write(row_num, col_num, row[col_num], font_style)
-    t = static_count_message()
+    t = static_count_message(account)
     result = t.result()
     columns1 = ['name', 'surname', 'telegram', 'card_ cardType',
                 'cardId', 'bonusBalance' ]

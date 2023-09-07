@@ -38,7 +38,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     # JWT-эндпоинты, для управления JWT-токенами:
     path('auth/', include('djoser.urls.jwt')),
-    path('statisic/', include('statisic.urls')),
+    path('statisic/<str:account>', include('statisic.urls')),
     path('account/', include('accountapp.urls')),
     re_path(
         r"^swagger(?P<format>\\.json|\\.yaml)$",
