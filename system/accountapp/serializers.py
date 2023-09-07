@@ -22,7 +22,6 @@ class ClientSerializer(serializers.ModelSerializer):
     
 
     def create(self, validated_data):
-        
         request = self.context.get('request', None)
         card = validated_data.pop('card')
         print(card, 1)
@@ -33,9 +32,19 @@ class ClientSerializer(serializers.ModelSerializer):
         client = Client.objects.create(**validated_data, card =card_id)
         print(4)
         return client
+       
     
     def update(self, instance, validated_data):
         card_data = validated_data.pop('card', {})
+        
+        bonus_card =  card_data['bonusBalance']
+        bonus_cardId=card_data['cardId']
+        print(bonus_cardId, 2)
+        old = Сard.objects.get(cardId = bonus_cardId)
+        bonus = old.bonusBalance + bonus_card
+        print(bonus_card, 1)
+        print(old.bonusBalance, bonus_card, bonus, 3)
+        card_data['bonusBalance'] = bonus
         card_serializer = СardSerializer(instance.card, data=card_data)
         card_serializer.is_valid(raise_exception=True)
         card_serializer.save()
