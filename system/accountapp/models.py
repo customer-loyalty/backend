@@ -1,27 +1,52 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django.core.validators import RegexValidator
-
+from django.core.validators import MinValueValidator, MaxValueValidator
+from decimal import *
 CHOICES = (('male', 'Мужской пол'), ('female', 'Женский пол'))
+PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 
-
-class Сard(models.Model):
-    cardType = models.CharField(
+class TypeCard(models.Model):
+    """Класс для работы с типом карт"""
+    name = models.CharField(
         verbose_name='Имя',
-        help_text='Тип карты',
+        help_text='Введите свое имя',
         max_length=150
+    )
+    purchase_amount = models.PositiveIntegerField(default=0,
+        verbose_name='Сумма покупки')
+    rate_field = models.DecimalField(max_digits=3, decimal_places=0, 
+                                     default=Decimal('0'),
+                                     validators=PERCENTAGE_VALIDATOR,
+                                     verbose_name='Процент скидки')
+class Сard(models.Model):
+    """Класс для работы с моделью карты клиента (покупателя)"""
+    cardType = models.ForeignKey(
+        TypeCard,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name='Тип карты',
     )
     cardId =  models.IntegerField(verbose_name='Код карты')
                                  
-    bonusBalance = models.CharField(
-        verbose_name='Баланс карты',
-        max_length=150
+    bonusBalance =  models.PositiveIntegerField(default=0,
+        verbose_name='Баланс карты'
     )
 
 
+    
+    
+class PurchaseAmount(models.Model):
+    """Класс для работы с моделью общей стоимостью покупок"""
+    total_amount = models.PositiveIntegerField(
+            verbose_name='Сумма покупок'
+        )
+
+
+
+
 class Account(AbstractUser):
-    """Класс для работы с модель """
+    """Класс для работы с модель Аккаунт(компания)"""
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ("username",)
@@ -45,6 +70,7 @@ class Account(AbstractUser):
 
 
 class Client(models.Model):
+    """Класс для работы с моделью Клиент(покупатель)"""
     name = models.CharField(
         verbose_name='Имя',
         help_text='Введите свое имя',
@@ -80,13 +106,19 @@ class Client(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Карта',
     )
+    purchase_amount = models.ForeignKey(
+        'PurchaseAmount',
+        on_delete=models.CASCADE,
+        verbose_name='Карта',
+    )
 
     class Meta:
         verbose_name = 'Клиент'
-
         verbose_name_plural = 'Клиенты'
 
     def __str__(self):
         return f'{self.name} {self.surname}'
+    
+
     
 
