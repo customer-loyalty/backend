@@ -1,8 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from decimal import *
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator, MaxValueValidator
-from decimal import *
+
+
 CHOICES = (('male', 'Мужской пол'), ('female', 'Женский пол'))
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 
@@ -34,23 +36,19 @@ class Сard(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Тип карты',
     )
-    cardId =  models.IntegerField(verbose_name='Код карты', unique=True)
+    cardId =  models.IntegerField(verbose_name='Код карты')
                                  
     bonusBalance =  models.PositiveIntegerField(default=0,
         verbose_name='Баланс карты'
     )
 
-
-    
-    
 class PurchaseAmount(models.Model):
     """Класс для работы с моделью общей стоимостью покупок"""
     total_amount = models.PositiveIntegerField(
             verbose_name='Сумма покупок'
         )
     card = models.ForeignKey(
-        Сard,
-        null=True,
+        Сard, 
         on_delete=models.CASCADE,
         verbose_name='Карта клиента',
     )
@@ -92,19 +90,11 @@ class Client(models.Model):
         help_text='Введите свою фамилию',
         max_length=150
     )
-    middleName = models.CharField(
-        verbose_name='Отчество',
-        help_text='Введите свое отчество',
-        max_length=150)
     birthday = models.DateField(max_length=8)
     gender = models.CharField(choices=CHOICES,
                            default="Мужской пол",
                            max_length=40)
     reg = models.DateTimeField(auto_now_add=True)
-    telegram = models.CharField(
-        verbose_name='имя аккаунта телеграмм',
-        max_length=150
-    )
     phone_number = PhoneNumberField()
     client = models.ForeignKey(
         'Account',
@@ -119,8 +109,9 @@ class Client(models.Model):
     )
     purchase_amount = models.ForeignKey(
         'PurchaseAmount',
+        default=0,
         on_delete=models.CASCADE,
-        verbose_name='Карта',
+        verbose_name='Покупка',
     )
 
     class Meta:
@@ -130,6 +121,7 @@ class Client(models.Model):
     def __str__(self):
         return f'{self.name} {self.surname}'
     
+      
 
     
 

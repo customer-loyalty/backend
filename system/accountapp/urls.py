@@ -8,7 +8,7 @@ app_name = 'api'
 
 
 router = DefaultRouter()
-router.register('card',  ClientViewSet, basename='card')
+router.register('client',  ClientViewSet, basename='client')
 router.register('users', AccountViewSet, basename='users')
 router.register('cardtype', TypeCardViewSet, basename='cardtype')
 router.register('purchase', PurchaseAmountViewSet, basename='purchase')

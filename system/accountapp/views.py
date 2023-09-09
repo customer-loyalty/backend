@@ -4,7 +4,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
 from djoser.views import UserViewSet
 from .models import Client, Account, TypeCard, PurchaseAmount
-from .serializers import ClientSerializer, AccountSerializer, TypeCardtSerializer, PurchaseAmountSerializer
+from .serializers import (ClientSerializer, ClientPostSerializer, ClientUpdateSerializer, AccountSerializer, TypeCardtSerializer, 
+                            PurchaseAmountSerializer)
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -14,6 +15,16 @@ class ClientViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('client',)
     permission_classes = (permissions.IsAuthenticated,)
+
+    def get_serializer_class(self):
+        """Функция выбора класса - сериализатора в зависимости от метода"""
+        if self.request.method == "GET":    
+            return ClientSerializer
+        elif self.request.method == "POST":
+            return ClientPostSerializer
+        else:
+            return ClientUpdateSerializer
+
 
 class AccountViewSet(UserViewSet):
     """
