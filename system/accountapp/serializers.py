@@ -1,10 +1,12 @@
 from rest_framework import serializers
-from django.http import HttpResponse
-from phonenumber_field.serializerfields import PhoneNumberField
+from django.db.models import F
 from djoser.serializers import UserCreateSerializer
-from rest_framework import status
-from .models import Client, Сard, Account
-from rest_framework.response import Response
+
+from .models import Client, Сard, Account, TypeCard, Сard, PurchaseAmount
+
+
+
+
 class СardSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('cardType','cardId', 'bonusBalance')
@@ -12,7 +14,7 @@ class СardSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    """Класс - сериализатор модели """
+    """Класс - сериализатор модели Client"""
     reg = serializers.DateTimeField(format="%Y-%m-%d")
     card = СardSerializer()
     class Meta:
@@ -53,15 +55,34 @@ class AccountSerializer(UserCreateSerializer):
     """Кастомизация пользователя из Djoser."""
     
    
-
     class Meta:
         model = Account
         fields = ('username', 'email',  
                   'phone_number',  'password',
                   'first_name', 'last_name')  
         
+
+class TypeCardtSerializer(serializers.ModelSerializer):
    
+    class Meta:
+        model = TypeCard
+        fields = ('name', 'purchase_amount',  
+                  'rate_field',  'account',) 
 
 
+class PurchaseAmountSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = PurchaseAmount
+        fields = ('total_amount', 'card',) 
 
-
+    def update(self, instance, validated_data):
+        print(validated_data)
+        card_id = validated_data['card']
+        amount= validated_data['total_amount']
+        PurchaseAmount.objects.filter(card=card_id).update(total_amount=F('total_amount') + amount)
+        return instance
+      
+        
+       
+                     

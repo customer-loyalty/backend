@@ -19,6 +19,13 @@ class TypeCard(models.Model):
                                      default=Decimal('0'),
                                      validators=PERCENTAGE_VALIDATOR,
                                      verbose_name='Процент скидки')
+    account = models.ForeignKey(
+        'Account',
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name='аккаунт',
+    )
+
 class Сard(models.Model):
     """Класс для работы с моделью карты клиента (покупателя)"""
     cardType = models.ForeignKey(
@@ -27,7 +34,7 @@ class Сard(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Тип карты',
     )
-    cardId =  models.IntegerField(verbose_name='Код карты')
+    cardId =  models.IntegerField(verbose_name='Код карты', unique=True)
                                  
     bonusBalance =  models.PositiveIntegerField(default=0,
         verbose_name='Баланс карты'
@@ -41,9 +48,13 @@ class PurchaseAmount(models.Model):
     total_amount = models.PositiveIntegerField(
             verbose_name='Сумма покупок'
         )
-
-
-
+    card = models.ForeignKey(
+        Сard,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name='Карта клиента',
+    )
+    
 
 class Account(AbstractUser):
     """Класс для работы с модель Аккаунт(компания)"""
