@@ -14,7 +14,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('client',)
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
 
     def get_serializer_class(self):
         """Функция выбора класса - сериализатора в зависимости от метода"""
@@ -34,7 +34,7 @@ class AccountViewSet(UserViewSet):
     """
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
     http_method_names = ['get', 'post', 'delete', 'head']
 
 
@@ -49,4 +49,4 @@ class PurchaseAmountViewSet(viewsets.ModelViewSet):
     """Вьюсет для работе с моделью Client."""
     queryset = PurchaseAmount.objects.all()
     serializer_class = PurchaseAmountSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
