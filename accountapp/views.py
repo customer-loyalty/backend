@@ -3,8 +3,9 @@ from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
 from djoser.views import UserViewSet
-from .models import Client, Account
-from .serializers import ClientSerializer, AccountSerializer
+from .models import Client, Account, TypeCard, PurchaseAmount
+from .serializers import (ClientSerializer, ClientPostSerializer, ClientUpdateSerializer, AccountSerializer, TypeCardtSerializer, 
+                            PurchaseAmountSerializer)
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -13,7 +14,17 @@ class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('client',)
-    permission_classes = (permissions.IsAuthenticated,)
+    #permission_classes = (permissions.IsAuthenticated,)
+
+    def get_serializer_class(self):
+        """Функция выбора класса - сериализатора в зависимости от метода"""
+        if self.request.method == "GET":    
+            return ClientSerializer
+        elif self.request.method == "POST":
+            return ClientPostSerializer
+        else:
+            return ClientUpdateSerializer
+
 
 class AccountViewSet(UserViewSet):
     """
@@ -21,9 +32,21 @@ class AccountViewSet(UserViewSet):
     и
     создание/получение/удаления подписок.
     """
-
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-   
+    #permission_classes = (permissions.IsAuthenticated,)
     http_method_names = ['get', 'post', 'delete', 'head']
+
+
+class TypeCardViewSet(viewsets.ModelViewSet):
+    """Вьюсет для работе с моделью Client."""
+    queryset = TypeCard.objects.all()
+    serializer_class = TypeCardtSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class PurchaseAmountViewSet(viewsets.ModelViewSet):
+    """Вьюсет для работе с моделью Client."""
+    queryset = PurchaseAmount.objects.all()
+    serializer_class = PurchaseAmountSerializer
+    #permission_classes = (permissions.IsAuthenticated,)

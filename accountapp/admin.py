@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from accountapp.models import (Сard, Account, Client)                   
+from accountapp.models import (Сard, PurchaseAmount, Account, Client, TypeCard)                   
 
 
 @admin.register(Сard)
@@ -18,3 +18,11 @@ class ClientAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(TypeCard)
+class TypeCardAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(PurchaseAmount)
+class PurchaseAmountAdmin(admin.ModelAdmin):
+    pass
