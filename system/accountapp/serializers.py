@@ -13,7 +13,7 @@ class PurchaseAmountSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = PurchaseAmount
-        fields = ('id','total_amount',) #сделать 2 сериалайзера 'card' - #c) 
+        fields = ('id','total_amount','card') #сделать 2 сериалайзера 'card' - #c) 
 
     def update(self, instance, validated_data):
         print(validated_data)
