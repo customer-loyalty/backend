@@ -27,7 +27,7 @@ class PurchaseAmountSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = PurchaseAmount
-        fields = ('id','total_amount', 'card') #сделать 2 сериалайзера 'card' - #c)
+        fields = ('id','total_amount') #сделать 2 сериалайзера 'card' - #c)
 
 
     @staticmethod
@@ -42,8 +42,6 @@ class PurchaseAmountSerializer(serializers.ModelSerializer):
             if c.purchase_amount <= card_type.purchase_amount <= total_amount:
                 c = card_type
         print(c, card_id)
-        '''client_card = Сard.objects.get(pk=card_id)     
-        print( client_card, 4)'''
         card_id.cardType = c
         print(c, 6)
         card_id.save()
