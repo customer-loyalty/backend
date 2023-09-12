@@ -96,6 +96,7 @@ class Client(models.Model):
                            max_length=40)
     reg = models.DateTimeField(auto_now_add=True)
     phone_number = PhoneNumberField()
+    mail = models.EmailField(max_length = 254)
     client = models.ForeignKey(
         'Account',
         null=True,
