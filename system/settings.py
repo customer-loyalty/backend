@@ -179,5 +179,15 @@ DJOSER = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-SITE_NAME = "SaaSitive"
+
+
+#Email Configuration
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = "Anton60874022@mail.ru"
+EMAIL_HOST_PASSWORD = "k7yNJxPTVE0viQAevuqg"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
