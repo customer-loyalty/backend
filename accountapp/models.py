@@ -12,7 +12,7 @@ class TypeCard(models.Model):
     """Класс для работы с типом карт"""
     name = models.CharField(
         verbose_name='Имя',
-        help_text='Введите свое имя',
+        help_text='Введите имя карты',
         max_length=150
     )
     purchase_amount = models.PositiveIntegerField(default=0,
