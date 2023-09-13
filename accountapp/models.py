@@ -8,6 +8,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 CHOICES = (('male', 'Мужской пол'), ('female', 'Женский пол'))
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 
+
 class TypeCard(models.Model):
     """Класс для работы с типом карт"""
     name = models.CharField(
@@ -16,8 +17,8 @@ class TypeCard(models.Model):
         max_length=150
     )
     purchase_amount = models.PositiveIntegerField(default=0,
-        verbose_name='Сумма покупки')
-    rate_field = models.DecimalField(max_digits=3, decimal_places=0, 
+                                                  verbose_name='Сумма покупки')
+    rate_field = models.DecimalField(max_digits=3, decimal_places=0,
                                      default=Decimal('0'),
                                      validators=PERCENTAGE_VALIDATOR,
                                      verbose_name='Процент скидки')
@@ -25,8 +26,16 @@ class TypeCard(models.Model):
         'Account',
         null=True,
         on_delete=models.CASCADE,
-        verbose_name='аккаунт',
-    )
+        verbose_name='аккаунт',)
+
+    class Meta:
+        verbose_name = 'Тип карты'
+        verbose_name_plural = 'Тип карты'
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
 
 class Сard(models.Model):
     """Класс для работы с моделью карты клиента (покупателя)"""
@@ -34,13 +43,16 @@ class Сard(models.Model):
         TypeCard,
         null=True,
         on_delete=models.CASCADE,
-        verbose_name='Тип карты',
-    )
-    cardId =  models.IntegerField(verbose_name='Код карты')
-                                 
-    bonusBalance =  models.PositiveIntegerField(default=0,
-        verbose_name='Баланс карты'
-    )
+        verbose_name='Тип карты',)
+    cardId = models.IntegerField(verbose_name='Код карты')
+    bonusBalance = models.PositiveIntegerField(default=0,
+                                               verbose_name='Баланс карты')
+
+    class Meta:
+        verbose_name = 'Карта клиента'
+        verbose_name_plural = 'Карты клиентов'
+        ordering = ['id']
+
 
 class PurchaseAmount(models.Model):
     """Класс для работы с моделью общей стоимостью покупок"""
@@ -48,11 +60,15 @@ class PurchaseAmount(models.Model):
             verbose_name='Сумма покупок'
         )
     card = models.ForeignKey(
-        Сard, 
+        Сard,
         on_delete=models.CASCADE,
-        verbose_name='Карта клиента',
-    )
-    
+        verbose_name='Карта клиента',)
+
+    class Meta:
+        verbose_name = 'Сумма покупок клиента'
+        verbose_name_plural = 'Сумма покупок клиентов'
+        ordering = ['id']
+
 
 class Account(AbstractUser):
     """Класс для работы с модель Аккаунт(компания)"""
@@ -68,7 +84,7 @@ class Account(AbstractUser):
         validators=[AbstractUser.username_validator, ],)
     phone_number = PhoneNumberField()
     email = models.EmailField('электронный адрес', max_length=254, unique=True)
-    
+
     class Meta:
         verbose_name = 'Аккаунт'
         verbose_name_plural = 'Аккаунты'
@@ -85,18 +101,18 @@ class Client(models.Model):
         help_text='Введите свое имя',
         max_length=150
     )
-    surname= models.CharField(
+    surname = models.CharField(
         verbose_name='Фамилия',
         help_text='Введите свою фамилию',
         max_length=150
     )
     birthday = models.DateField(max_length=8)
     gender = models.CharField(choices=CHOICES,
-                           default="Мужской пол",
-                           max_length=40)
+                              default="Мужской пол",
+                              max_length=40)
     reg = models.DateTimeField(auto_now_add=True)
     phone_number = PhoneNumberField()
-    mail = models.EmailField(max_length = 254)
+    mail = models.EmailField(max_length=254)
     client = models.ForeignKey(
         'Account',
         null=True,
@@ -121,8 +137,3 @@ class Client(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.surname}'
-    
-      
-
-    
-

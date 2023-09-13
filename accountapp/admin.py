@@ -5,7 +5,7 @@ from accountapp.models import (Сard, PurchaseAmount, Account, Client, TypeCard)
 
 @admin.register(Сard)
 class СardAdmin(admin.ModelAdmin):
-    pass
+ pass
 
 
 @admin.register(Account)
