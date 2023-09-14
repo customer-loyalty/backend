@@ -119,8 +119,8 @@ class AccountSerializer(UserCreateSerializer):
 
     class Meta:
         model = Account
-        fields = ('username', 'email',
-                  'phone_number',  'password',
+        fields = ('username', 'url', 'activity',
+                  'аddress', 'email', 'password',
                   'first_name', 'last_name')
 
 
@@ -129,5 +129,5 @@ class TypeCardtSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TypeCard
-        fields = ('id', 'name', 'purchase_amount',
+        fields = ('id', 'name', 'purchase_amount', 'initial_bonuses',
                   'rate_field',  'account',)
