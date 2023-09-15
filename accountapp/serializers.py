@@ -7,12 +7,32 @@ from django.core.mail import send_mail
 from .models import Client, Сard, Account, TypeCard, PurchaseAmount
 
 
-class СardSerializer(serializers.ModelSerializer):
+class СardBonusSerializer(serializers.ModelSerializer):
     """Сериалайзер для работы с картами клиента"""
 
     class Meta:
-        fields = ("id", "cardType", "cardId", "bonusBalance")
         model = Сard
+        fields = ("id", "cardType", "cardId", "bonusBalance")
+
+
+class СardBonusPostSerializer(serializers.ModelSerializer):
+    """Сериалайзер для работы с картами клиента"""
+
+    class Meta:
+        model = Сard
+        fields = ("id", "cardType", "cardId",)
+
+
+class СardBonusUpdateSerializer(СardBonusSerializer):
+    """Сериалайзер для работы с картами клиента"""
+
+    def update(self, instance, validated_data):
+        print(validated_data)
+        card_id = validated_data['cardId']
+        bonusBalance = validated_data['bonusBalance']
+        Сard.objects.filter(cardId=card_id).update(bonusBalance=F('bonusBalance')
+                                                   + bonusBalance)
+        return instance
 
 
 class PurchaseAmountPostSerializer(serializers.ModelSerializer):
@@ -47,8 +67,6 @@ class PurchaseAmountSerializer(serializers.ModelSerializer):
         PurchaseAmount.objects.filter(card=card_id).update(total_amount=F('total_amount')
                                                            + amount)
         PurchaseAmountSerializer.update_card_type(card_id)
-        # send_mail('Тема', 'Покупка', settings.EMAIL_HOST_USER,
-        # to=['A60874022@yandex.ru'], fail_silently=False,)
         return instance
 
 
@@ -56,7 +74,7 @@ class ClientSerializer(serializers.ModelSerializer):
     """Класс - сериализатор модели Client для get запроса"""
     reg = serializers.DateTimeField(format="%Y-%m-%d")
     purchase_amount = PurchaseAmountPostSerializer()
-    card = СardSerializer()
+    card = СardBonusPostSerializer()
 
     class Meta:
         model = Client
@@ -70,8 +88,11 @@ class ClientPostSerializer(ClientSerializer):
     def create(self, validated_data):
         request = self.context.get('request', None)
         card = validated_data.pop('card')
+        print(card['cardType'], 456)
+        bonus = card['cardType'].initial_bonuses
+        print(bonus, 124)
         purchase = validated_data.pop('purchase_amount')
-        Сard.objects.create(**card)
+        Сard.objects.create(**card, bonusBalance=bonus)
         card_id = Сard.objects.latest('id')
         purchase = PurchaseAmount.objects.create(**purchase, card=card_id)
         purchase_amount_id = PurchaseAmount.objects.latest('id')
@@ -79,12 +100,12 @@ class ClientPostSerializer(ClientSerializer):
                                        card=card_id,
                                        purchase_amount=purchase_amount_id)
         client_name = validated_data['name']
-        bonusBalance = card['bonusBalance']
+        print(client_name, 125)
         client_email = validated_data['mail']
-        create_client_messenge = (f'{client_name}, здравствуйте. '
+        create_client_messenge = (f'{client_name}, Здравствуйте. '
                                   f'Спасибо за регистрацию. '
-                                  f'Вам начислено {bonusBalance}. '
-                                  f'Текущий баланс {bonusBalance}.')
+                                  f'Вам начислено {bonus}. '
+                                  f'Текущий баланс {bonus}.')
         send_mail('Тема', create_client_messenge,
                   settings.EMAIL_HOST_USER, [client_email])
         return client
@@ -98,20 +119,6 @@ class ClientUpdateSerializer(serializers.ModelSerializer):
         model = Client
         fields = ('id', 'name', 'surname', 'birthday', 'gender', 'mail',
                   'reg', 'phone_number', 'client',)
-
-    '''def update(self, instance, validated_data):
-        card_data = validated_data.pop('card', {})
-        bonus_card =  card_data['bonusBalance']
-        bonus_cardId=card_data['cardId']
-        print(bonus_cardId, 2)
-        old = Сard.objects.get(cardId = bonus_cardId).bonusBalance
-        print(old)
-        bonus = old + bonus_card
-        card_data['bonusBalance'] = bonus
-        card_serializer = СardSerializer(instance.card, data=card_data)
-        card_serializer.is_valid(raise_exception=True)
-        card_serializer.save()
-        return super().update(instance, validated_data)'''
 
 
 class AccountSerializer(UserCreateSerializer):

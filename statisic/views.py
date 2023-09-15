@@ -38,6 +38,7 @@ def export_xls(request, account):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="users.xls"'
     wb = xlwt.Workbook(encoding='utf-8')
+
     def xls(columns, rows, name):
         ws = wb.add_sheet(name)
         row_num = 0

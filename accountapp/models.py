@@ -23,8 +23,8 @@ class TypeCard(models.Model):
                                      validators=PERCENTAGE_VALIDATOR,
                                      verbose_name='Процент скидки')
     initial_bonuses = models.DecimalField(max_digits=10, decimal_places=0,
-                                     default=Decimal('0'),
-                                     verbose_name='Начальные бонусы')
+                                          default=Decimal('0'),
+                                          verbose_name='Начальные бонусы')
     account = models.ForeignKey(
         'Account',
         null=True,
@@ -50,6 +50,7 @@ class Сard(models.Model):
     cardId = models.IntegerField(verbose_name='Код карты')
     bonusBalance = models.PositiveIntegerField(default=0,
                                                verbose_name='Баланс карты')
+
     class Meta:
         verbose_name = 'Карта клиента'
         verbose_name_plural = 'Карты клиентов'
@@ -83,8 +84,9 @@ class Account(AbstractUser):
         max_length=150,
         unique=True,
         verbose_name='Уникальное имя',
-        validators=[AbstractUser.username_validator, ],)
-    url = models.URLField( verbose_name='Сайт предприятия')
+        validators=[AbstractUser.username_validator, ],
+    )
+    url = models.URLField(verbose_name='Сайт предприятия')
     activity = models.CharField(
         verbose_name='Деятельность предприятия',
         max_length=150
