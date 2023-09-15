@@ -35,15 +35,10 @@ schema_view = get_schema_view(
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('djoser.urls')),
-    path('statisic/<str:account>', include('statisic.urls')),
-    path('auth/', include('djoser.urls.jwt')),
-    path('account/', include('accountapp.urls')),
-    re_path(
-        r"^swagger(?P<format>\\.json|\\.yaml)$",
-        schema_view.without_ui(cache_timeout=0),
-        name="schema-json",
-    ),
+    path('api/auth/', include('djoser.urls')),
+    path('api/statisic/<str:account>', include('statisic.urls')),
+    path('api/auth/', include('djoser.urls.jwt')),
+    path('api/account/', include('accountapp.urls')),
     re_path(
         r"^api/docs/swagger/$",
         schema_view.with_ui("swagger", cache_timeout=0),
