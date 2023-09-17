@@ -120,6 +120,11 @@ DB_TYPE = os.getenv('DB_TYPE', default='sqlite')
 if DB_TYPE == 'sqlite':
     DATABASES['default'] = DATABASES['sqlite']
 else:
+    print(os.getenv('DB_NAME'))
+    print(os.getenv('POSTGRES_USER'))
+    print(os.getenv('POSTGRES_PASSWORD'))
+    print(os.getenv('DB_HOST'))
+    print(os.getenv('DB_PORT'))
     DATABASES['default'] = DATABASES['postgres']
 
 
