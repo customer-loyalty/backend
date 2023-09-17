@@ -4,3 +4,4 @@ __pycache__
 /nginx
 docker-compose.yaml
 .env.example
+.gitignore
