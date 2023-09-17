@@ -1,6 +1,6 @@
 db.sqlite
 .venv
 __pycache__
-readme
 /nginx
 docker-compose.yaml
+.env.example
