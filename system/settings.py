@@ -47,13 +47,13 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "theproject.ddns.net"
+    "http://theproject.ddns.net"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "theproject.ddns.net"
+    "http://theproject.ddns.net"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
