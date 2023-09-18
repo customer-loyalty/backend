@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'system.wsgi.application'
 DATABASES = {
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', default='postgres'),
+        'NAME': os.getenv('POSTGRES_DB', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
         'HOST': os.getenv('DB_HOST', default='localhost'),
@@ -120,11 +120,11 @@ DB_TYPE = os.getenv('DB_TYPE', default='sqlite')
 if DB_TYPE == 'sqlite':
     DATABASES['default'] = DATABASES['sqlite']
 else:
-    print(os.getenv('DB_NAME'))
-    print(os.getenv('POSTGRES_USER'))
-    print(os.getenv('POSTGRES_PASSWORD'))
-    print(os.getenv('DB_HOST'))
-    print(os.getenv('DB_PORT'))
+    print('name ', os.getenv('POSTGRES_DB'))
+    print('user ', os.getenv('POSTGRES_USER'))
+    print('password ', os.getenv('POSTGRES_PASSWORD'))
+    print('host ', os.getenv('DB_HOST'))
+    print('port ', os.getenv('DB_PORT'))
     DATABASES['default'] = DATABASES['postgres']
 
 
