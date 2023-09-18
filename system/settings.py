@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -185,6 +186,11 @@ DJOSER = {
     'SERIALIZERS': {
          'user_create': 'accountapp.serializers.AccountSerializer'
     }
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60*24),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=360),
 }
 
 #Email Configuration
