@@ -74,7 +74,7 @@ class ClientSerializer(serializers.ModelSerializer):
     """Класс - сериализатор модели Client для get запроса"""
     reg = serializers.DateTimeField(format="%Y-%m-%d")
     purchase_amount = PurchaseAmountPostSerializer()
-    card = СardBonusPostSerializer()
+    card = СardBonusSerializer()
 
     class Meta:
         model = Client
@@ -84,6 +84,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ClientPostSerializer(ClientSerializer):
     """Класс - сериализатор модели Client для post запроса"""
+    card = СardBonusPostSerializer()
 
     def create(self, validated_data):
         request = self.context.get('request', None)
