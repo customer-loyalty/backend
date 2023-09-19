@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -47,11 +48,13 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "http://theproject.ddns.net"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "http://theproject.ddns.net"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -102,7 +105,7 @@ WSGI_APPLICATION = 'system.wsgi.application'
 DATABASES = {
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', default='postgres'),
+        'NAME': os.getenv('POSTGRES_DB', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
         'HOST': os.getenv('DB_HOST', default='localhost'),
@@ -120,6 +123,11 @@ DB_TYPE = os.getenv('DB_TYPE', default='sqlite')
 if DB_TYPE == 'sqlite':
     DATABASES['default'] = DATABASES['sqlite']
 else:
+    print('name ', os.getenv('POSTGRES_DB'))
+    print('user ', os.getenv('POSTGRES_USER'))
+    print('password ', os.getenv('POSTGRES_PASSWORD'))
+    print('host ', os.getenv('DB_HOST'))
+    print('port ', os.getenv('DB_PORT'))
     DATABASES['default'] = DATABASES['postgres']
 
 
@@ -144,10 +152,8 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 LANGUAGE_CODE = "ru-ru"
@@ -182,7 +188,10 @@ DJOSER = {
     }
 }
 
-
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60*24),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=360),
+}
 
 #Email Configuration
 EMAIL_HOST = 'smtp.mail.ru'
