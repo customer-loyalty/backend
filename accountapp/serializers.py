@@ -21,7 +21,7 @@ class СardBonusPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Сard
         fields = ("id", "cardType", "cardId",)
-
+    
 
 class СardBonusUpdateSerializer(СardBonusSerializer):
     """Сериалайзер для работы с картами клиента"""
