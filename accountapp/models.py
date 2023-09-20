@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from decimal import *
 from phonenumber_field.modelfields import PhoneNumberField
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator, RegexValidator
+from django.utils.translation import gettext_lazy as _
 
 
 CHOICES = (('male', 'Мужской пол'), ('female', 'Женский пол'))
@@ -79,12 +80,21 @@ class Account(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ("username",)
 
+    ru_en_validator = RegexValidator(
+        r'^[a-zA-Zа-яА-ЯёЁ\s-]+$',
+        'Может содержать только буквы русского и английского алфавита, пробел и тире.'
+    )
+    ru_validator = RegexValidator(
+        r'^[а-яА-ЯёЁ\s-]+$',
+        'Может содержать только буквы русского алфавита, пробел и тире.'
+    )
+
     username = models.CharField(
         db_index=True,
-        max_length=150,
+        max_length=30,
         unique=True,
         verbose_name='Уникальное имя',
-        validators=[AbstractUser.username_validator, ],
+        validators=[AbstractUser.username_validator, ru_en_validator, MinLengthValidator(2), ],
     )
     url = models.URLField(verbose_name='Сайт предприятия')
     activity = models.CharField(
@@ -96,6 +106,10 @@ class Account(AbstractUser):
         max_length=150
     )
     email = models.EmailField('электронный адрес', max_length=254, unique=True)
+    first_name = models.CharField(_("first name"), max_length=30, blank=True,
+                                  validators=[ru_validator, MinLengthValidator(2), ])
+    last_name = models.CharField(_("last name"), max_length=30, blank=True, 
+                                 validators=[ru_validator, MinLengthValidator(2)])
 
     class Meta:
         verbose_name = 'Аккаунт'
@@ -108,15 +122,22 @@ class Account(AbstractUser):
 
 class Client(models.Model):
     """Класс для работы с моделью Клиент(покупатель)"""
+
+    ru_validator = RegexValidator(
+        r'^[а-яА-ЯёЁ\s-]+$',
+        'Может содержать только буквы русского алфавита, пробел и тире.'
+    )
     name = models.CharField(
         verbose_name='Имя',
         help_text='Введите свое имя',
-        max_length=150
+        max_length=30, 
+        validators=[ru_validator, MinLengthValidator(2), ]
     )
     surname = models.CharField(
         verbose_name='Фамилия',
         help_text='Введите свою фамилию',
-        max_length=150
+        max_length=30,
+        validators=[ru_validator, MinLengthValidator(2), ]
     )
     birthday = models.DateField(max_length=8)
     gender = models.CharField(choices=CHOICES,
