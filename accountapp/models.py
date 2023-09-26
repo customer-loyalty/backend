@@ -41,7 +41,7 @@ class TypeCard(models.Model):
         return self.name
 
 
-class Сard(models.Model):
+class Card(models.Model):
     """Класс для работы с моделью карты клиента (покупателя)"""
     cardType = models.ForeignKey(
         TypeCard,
@@ -64,7 +64,7 @@ class PurchaseAmount(models.Model):
             verbose_name='Сумма покупок'
         )
     card = models.ForeignKey(
-        Сard,
+        Card,
         on_delete=models.CASCADE,
         verbose_name='Карта клиента',)
 
@@ -101,7 +101,7 @@ class Account(AbstractUser):
         verbose_name='Деятельность предприятия',
         max_length=150
     )
-    аddress = models.CharField(
+    address = models.CharField(
         verbose_name='Адрес организации',
         max_length=150
     )
@@ -153,7 +153,7 @@ class Client(models.Model):
         verbose_name='Компания',
     )
     card = models.ForeignKey(
-        Сard,
+        Card,
         on_delete=models.CASCADE,
         verbose_name='Карта',
     )
