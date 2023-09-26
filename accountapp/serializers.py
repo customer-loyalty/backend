@@ -128,11 +128,11 @@ class AccountSerializer(UserCreateSerializer):
     class Meta:
         model = Account
         fields = ('username', 'url', 'activity',
-                  'аddress', 'email', 'password',
+                  'address', 'email', 'password',
                   'first_name', 'last_name')
 
 
-class TypeCardtSerializer(serializers.ModelSerializer):
+class TypeCardSerializer(serializers.ModelSerializer):
     """Cериалайзер для работы с типами карт"""
 
     class Meta:

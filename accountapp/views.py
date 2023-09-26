@@ -7,7 +7,7 @@ from djoser.views import UserViewSet
 from .models import Client, Account, TypeCard, PurchaseAmount, Card
 from .serializers import (ClientSerializer, ClientPostSerializer,
                           ClientUpdateSerializer, AccountSerializer,
-                          TypeCardtSerializer, PurchaseAmountSerializer, 
+                          TypeCardSerializer, PurchaseAmountSerializer,
                           CardBonusSerializer, CardBonusUpdateSerializer)
 
 
@@ -44,7 +44,7 @@ class AccountViewSet(UserViewSet):
 class TypeCardViewSet(viewsets.ModelViewSet):
     """Вьюсет для работе с моделью Client."""
     queryset = TypeCard.objects.all()
-    serializer_class = TypeCardtSerializer
+    serializer_class = TypeCardSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
 
