@@ -4,11 +4,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
 from djoser.views import UserViewSet
 
-from .models import Client, Account, TypeCard, PurchaseAmount, Сard
+from .models import Client, Account, TypeCard, PurchaseAmount, Card
 from .serializers import (ClientSerializer, ClientPostSerializer,
                           ClientUpdateSerializer, AccountSerializer,
                           TypeCardtSerializer, PurchaseAmountSerializer, 
-                          СardBonusSerializer, СardBonusUpdateSerializer)
+                          CardBonusSerializer, CardBonusUpdateSerializer)
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -56,12 +56,12 @@ class PurchaseAmountViewSet(viewsets.ModelViewSet):
 
 
 class CardBonusViewSet(viewsets.ModelViewSet):
-    queryset = Сard.objects.all()
-    serializer_class = СardBonusSerializer
+    queryset = Card.objects.all()
+    serializer_class = CardBonusSerializer
 
     def get_serializer_class(self):
         """Функция выбора класса - сериализатора в зависимости от метода"""
         if self.request.method == "GET":
-            return СardBonusSerializer
+            return CardBonusSerializer
         else:
-            return СardBonusUpdateSerializer
+            return CardBonusUpdateSerializer

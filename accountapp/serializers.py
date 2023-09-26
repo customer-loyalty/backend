@@ -4,33 +4,33 @@ from djoser.serializers import UserCreateSerializer
 from django.conf import settings
 from django.core.mail import send_mail
 
-from .models import Client, Сard, Account, TypeCard, PurchaseAmount
+from .models import Client, Card, Account, TypeCard, PurchaseAmount
 
 
-class СardBonusSerializer(serializers.ModelSerializer):
+class CardBonusSerializer(serializers.ModelSerializer):
     """Сериалайзер для работы с картами клиента"""
 
     class Meta:
-        model = Сard
+        model = Card
         fields = ("id", "cardType", "cardId", "bonusBalance")
 
 
-class СardBonusPostSerializer(serializers.ModelSerializer):
+class CardBonusPostSerializer(serializers.ModelSerializer):
     """Сериалайзер для работы с картами клиента"""
 
     class Meta:
-        model = Сard
+        model = Card
         fields = ("id", "cardType", "cardId",)
     
 
-class СardBonusUpdateSerializer(СardBonusSerializer):
+class CardBonusUpdateSerializer(CardBonusSerializer):
     """Сериалайзер для работы с картами клиента"""
 
     def update(self, instance, validated_data):
         print(validated_data)
         card_id = validated_data['cardId']
         bonusBalance = validated_data['bonusBalance']
-        Сard.objects.filter(cardId=card_id).update(bonusBalance=F('bonusBalance')
+        Card.objects.filter(cardId=card_id).update(bonusBalance=F('bonusBalance')
                                                    + bonusBalance)
         return instance
 
@@ -74,7 +74,7 @@ class ClientSerializer(serializers.ModelSerializer):
     """Класс - сериализатор модели Client для get запроса"""
     reg = serializers.DateTimeField(format="%Y-%m-%d")
     purchase_amount = PurchaseAmountPostSerializer()
-    card = СardBonusSerializer()
+    card = CardBonusSerializer()
 
     class Meta:
         model = Client
@@ -84,7 +84,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ClientPostSerializer(ClientSerializer):
     """Класс - сериализатор модели Client для post запроса"""
-    card = СardBonusPostSerializer()
+    card = CardBonusPostSerializer()
 
     def create(self, validated_data):
         request = self.context.get('request', None)
@@ -93,8 +93,8 @@ class ClientPostSerializer(ClientSerializer):
         bonus = card['cardType'].initial_bonuses
         print(bonus, 124)
         purchase = validated_data.pop('purchase_amount')
-        Сard.objects.create(**card, bonusBalance=bonus)
-        card_id = Сard.objects.latest('id')
+        Card.objects.create(**card, bonusBalance=bonus)
+        card_id = Card.objects.latest('id')
         purchase = PurchaseAmount.objects.create(**purchase, card=card_id)
         purchase_amount_id = PurchaseAmount.objects.latest('id')
         client = Client.objects.create(**validated_data,
