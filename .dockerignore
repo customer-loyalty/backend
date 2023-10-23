@@ -1,0 +1,6 @@
+db.sqlite
+.venv
+__pycache__
+docker-compose.yaml
+.env.example
+.gitignore
